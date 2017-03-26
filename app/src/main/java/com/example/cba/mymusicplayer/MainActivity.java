@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.song_item);
+        setContentView(R.layout.activity_songlist);
 
+        //ask permission
         if(ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
@@ -45,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSION_REQUEST);
             }
         } else {
-            doStuff();
+            playFile();
         }
     }
-
-    public void doStuff(){
+    //Spela fil
+    public void playFile(){
         listView = (ListView) findViewById(R.id.songList);
         arrayList = new ArrayList<>();
         getMusic();
@@ -59,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){
-                //öppna musikspelaren för att spela låt
+                //öppna musikspelaren för att spela låt "musicPlayer();"
             }
         });
 
 
     }
-
+    //get all the music files on the phone (layout för listview).
     public void getMusic(){
         ContentResolver contentResolver = getContentResolver();
         Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -74,15 +75,19 @@ public class MainActivity extends AppCompatActivity {
         if(songCursor != null && songCursor.moveToFirst()) {
             int songTitle = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int songArtist = songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int songLocation = songCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
             do {
                 String currentTitle = songCursor.getString(songTitle);
                 String currentArtist = songCursor.getString(songArtist);
-                arrayList.add(currentTitle + "\n" + currentArtist);
+                String currentLocation = songCursor.getString(songLocation);
+                arrayList.add("Title: " + currentTitle + "\n"
+                        + "Artist: " + currentArtist + "\n"
+                        + "Location: " + currentLocation);
             } while (songCursor.moveToNext());
         }
     }
-
+    //runs after the result of permission answer.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode){
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                         Toast.makeText(this, "Permission Granted!", Toast.LENGTH_SHORT).show();
 
-                        doStuff();
+                        playFile();
                     } else {
                         Toast.makeText(this, "No Permission Granted!", Toast.LENGTH_SHORT).show();
                         finish();
