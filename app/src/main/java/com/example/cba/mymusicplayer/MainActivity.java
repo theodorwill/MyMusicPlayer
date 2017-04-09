@@ -2,6 +2,7 @@ package com.example.cba.mymusicplayer;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){
                 //öppna musikspelaren för att spela låt "musicPlayer();"
+                startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
             }
         });
 
@@ -75,15 +77,12 @@ public class MainActivity extends AppCompatActivity {
         if(songCursor != null && songCursor.moveToFirst()) {
             int songTitle = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int songArtist = songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-            int songLocation = songCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
 
             do {
                 String currentTitle = songCursor.getString(songTitle);
                 String currentArtist = songCursor.getString(songArtist);
-                String currentLocation = songCursor.getString(songLocation);
                 arrayList.add("Title: " + currentTitle + "\n"
-                        + "Artist: " + currentArtist + "\n"
-                        + "Location: " + currentLocation);
+                        + "Artist: " + currentArtist);
             } while (songCursor.moveToNext());
         }
     }
