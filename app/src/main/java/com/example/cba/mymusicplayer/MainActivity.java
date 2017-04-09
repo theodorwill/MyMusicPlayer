@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
 
-                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                // app-defined int constant
-
                 return;
             }}
         //Kalla på låtlistan
@@ -115,6 +112,11 @@ public class MainActivity extends AppCompatActivity {
             }
             while (musicCursor.moveToNext());
         }
+    }
+
+    public void songPicked(View view){
+        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+        musicSrv.playSong();
     }
 
 
