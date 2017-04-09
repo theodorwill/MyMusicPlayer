@@ -76,6 +76,14 @@ public class MusicService extends Service implements
         player.prepareAsync();
     }
 
+    public void resumeSong(){
+        player.start();
+    }
+
+    public void pauseSong(){
+        player.pause();
+    }
+
     public void setSong(int songIndex){
         songPosn=songIndex;
     }

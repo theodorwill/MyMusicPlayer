@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Song> songList;
     private ListView songView;
-    private MusicService musicSrv;
+    public MusicService musicSrv;
     private Intent playIntent;
     private boolean musicBound=false;
 
@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
         musicSrv.playSong();
+        startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
     }
 
 
