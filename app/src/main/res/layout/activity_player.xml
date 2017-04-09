@@ -47,6 +47,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:background="@drawable/ic_repeat"
+        android:showAsAction="always"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="160dp"/>
 
@@ -56,6 +57,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:background="@drawable/ic_shuffle"
+        android:showAsAction="always"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="160dp"/>
