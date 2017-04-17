@@ -13,6 +13,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.R.id.progress;
 
@@ -29,6 +30,8 @@ public class MusicService extends Service implements
     private ArrayList<Song> songs;
     private int songPosn;
     private final IBinder musicBind = new MusicBinder();
+    private boolean shuffle=false;
+    private Random rand;
 
     public void onCreate(){
         //create the service
@@ -100,6 +103,30 @@ public class MusicService extends Service implements
         player.seekTo(progress*1000);
     }
 
+    public void setShuffle(){
+        if(shuffle) shuffle=false;
+        else shuffle=true;
+    }
+    public void playNext(){
+        if(shuffle){
+            int newSong = songPosn;
+            while(newSong==songPosn){
+                newSong=rand.nextInt(songs.size());
+            }
+            songPosn=newSong;
+        }
+        else{
+            songPosn++;
+            if(songPosn >=songs.size()) songPosn=0;
+        }
+        playSong();
+    }
+
+    public void playPrevious(){
+        songPosn --;
+        playSong();
+    }
+
     @Override
     public IBinder onBind(Intent arg0) {
         return musicBind;
@@ -113,18 +140,22 @@ public class MusicService extends Service implements
     }
 
     @Override
-    public void onCompletion(MediaPlayer mp) {
+    public void onCompletion(MediaPlayer player) {
+        if(player.getCurrentPosition() > 0){
+            player.reset();
+            playNext();
+        }
 
     }
 
     @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
+    public boolean onError(MediaPlayer player, int what, int extra) {
         return false;
     }
 
     @Override
-    public void onPrepared(MediaPlayer mp) {
+    public void onPrepared(MediaPlayer player) {
         //börja "playback"
-        mp.start();
+        player.start();
     }
 }

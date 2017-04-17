@@ -3,6 +3,8 @@ package com.example.cba.mymusicplayer;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.MediaController.MediaPlayerControl;
 import android.widget.SeekBar;
@@ -18,6 +20,8 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     private SeekBar songProgressBar;
+    private Button btnNextSong;
+    private Button btnPreviousSong;
     Handler mHandler = new Handler();
     private Utilities utils;
 
@@ -31,11 +35,13 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         songProgressBar = (SeekBar) findViewById(R.id.songTimer);
         songCurrentDurationLabel = (TextView) findViewById(R.id.currentTime);
         songTotalDurationLabel = (TextView) findViewById(R.id.endTime);
+        btnNextSong = (Button) findViewById(R.id.skipForward);
+        btnPreviousSong = (Button) findViewById(R.id.skipBack);
+
         utils = new Utilities();
         updateProgressBar();
 
         songProgressBar.setOnSeekBarChangeListener(this);
-
 
         ToggleButton toggle = (ToggleButton) findViewById(R.id.playPause);
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -45,6 +51,20 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
                 } else {
                     musicSrv.pauseSong();
                 }
+            }
+        });
+
+        btnNextSong.setOnClickListener(new Button.OnClickListener(){
+
+            public void onClick(View v) {
+                musicSrv.playNext();
+            }
+        });
+
+        btnPreviousSong.setOnClickListener(new Button.OnClickListener(){
+
+            public void onClick(View v) {
+                musicSrv.playPrevious();
             }
         });
 
