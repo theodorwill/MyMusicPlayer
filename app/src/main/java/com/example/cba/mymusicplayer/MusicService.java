@@ -36,6 +36,7 @@ public class MusicService extends Service implements
         songPosn=0;
         player = new MediaPlayer();
         initMusicPlayer();
+        player.setOnCompletionListener(this);
     }
 
     public void initMusicPlayer(){
@@ -65,6 +66,7 @@ public class MusicService extends Service implements
         Song playSong = songs.get(songPosn);
         //get id
         long currSong = playSong.getID();
+
         //set uri
         Uri trackUri = ContentUris.withAppendedId(
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,

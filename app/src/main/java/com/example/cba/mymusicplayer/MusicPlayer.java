@@ -32,6 +32,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         songCurrentDurationLabel = (TextView) findViewById(R.id.currentTime);
         songTotalDurationLabel = (TextView) findViewById(R.id.endTime);
         utils = new Utilities();
+        updateProgressBar();
 
         songProgressBar.setOnSeekBarChangeListener(this);
 
