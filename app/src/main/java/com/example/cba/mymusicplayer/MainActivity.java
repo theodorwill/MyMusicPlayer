@@ -1,6 +1,7 @@
 package com.example.cba.mymusicplayer;
 import com.example.cba.mymusicplayer.MusicService.MusicBinder;
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,7 @@ import android.content.ServiceConnection;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private ArrayList<Song> songList;
     private ListView songView;

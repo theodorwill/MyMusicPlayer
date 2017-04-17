@@ -14,6 +14,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import static android.R.id.progress;
+
 
 /**
  * Created by cba on 2017-04-02.
@@ -23,7 +25,7 @@ public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener {
 
-    private MediaPlayer player;
+    public MediaPlayer player;
     private ArrayList<Song> songs;
     private int songPosn;
     private final IBinder musicBind = new MusicBinder();
@@ -86,6 +88,14 @@ public class MusicService extends Service implements
 
     public void setSong(int songIndex){
         songPosn=songIndex;
+    }
+
+    public void getDuration(){
+        player.getDuration();
+    }
+
+    public void seekTo(){
+        player.seekTo(progress*1000);
     }
 
     @Override
