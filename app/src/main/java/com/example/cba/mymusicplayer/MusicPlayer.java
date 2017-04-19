@@ -18,6 +18,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
     private SeekBar songProgressBar;
+    private ToggleButton btnPlayPause;
     private Button btnNextSong;
     private Button btnPreviousSong;
     Handler mHandler = new Handler();
@@ -35,6 +36,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         songTotalDurationLabel = (TextView) findViewById(R.id.endTime);
         btnNextSong = (Button) findViewById(R.id.skipForward);
         btnPreviousSong = (Button) findViewById(R.id.skipBack);
+        btnPlayPause = (ToggleButton) findViewById(R.id.playPause);
 
 
         utils = new Utilities();
@@ -42,8 +44,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
 
         songProgressBar.setOnSeekBarChangeListener(this);
 
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.playPause);
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        btnPlayPause.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     musicSrv.resumeSong();
@@ -53,28 +54,31 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
             }
         });
 
+        //knapp för att gå till nästa låt
         btnNextSong.setOnClickListener(new Button.OnClickListener(){
 
             public void onClick(View v){
                 musicSrv.playNext();
+                btnPlayPause.setChecked(true);
             }
         });
 
+        //knapp för att spela föregående låt samt gå tbx till början.
         btnPreviousSong.setOnClickListener(new Button.OnClickListener(){
 
             public void onClick(View v){
 
-                if(songProgressBar.getProgress() < 1){
+                if(songProgressBar.getProgress() <= 0){
                     musicSrv.playPrevious();
+                    btnPlayPause.setChecked(true);
                 }
                     else{
                     musicSrv.player.seekTo(0);
                     updateProgressBar();
+                    btnPlayPause.setChecked(true);
                 }
             }
         });
-
-
     }
 
     public void updateProgressBar() {

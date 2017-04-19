@@ -124,6 +124,9 @@ public class MusicService extends Service implements
             songPosn--;
             playSong();
         }
+        else {
+            return;
+        }
     }
 
     @Override
