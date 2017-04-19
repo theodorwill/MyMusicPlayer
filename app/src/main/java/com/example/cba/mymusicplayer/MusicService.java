@@ -1,6 +1,5 @@
 package com.example.cba.mymusicplayer;
 
-
 import android.app.Service;
 import android.content.ContentUris;
 import android.content.Intent;
@@ -11,12 +10,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
-
 import static android.R.id.progress;
-
 
 /**
  * Created by cba on 2017-04-02.
@@ -107,6 +103,7 @@ public class MusicService extends Service implements
         if(shuffle) shuffle=false;
         else shuffle=true;
     }
+
     public void playNext(){
         if(shuffle){
             int newSong = songPosn;
@@ -122,9 +119,11 @@ public class MusicService extends Service implements
         playSong();
     }
 
-    public void playPrevious(){
-        songPosn --;
-        playSong();
+    public void playPrevious() {
+        if (songPosn > 0) {
+            songPosn--;
+            playSong();
+        }
     }
 
     @Override
@@ -151,6 +150,7 @@ public class MusicService extends Service implements
     @Override
     public boolean onError(MediaPlayer player, int what, int extra) {
         return false;
+
     }
 
     @Override

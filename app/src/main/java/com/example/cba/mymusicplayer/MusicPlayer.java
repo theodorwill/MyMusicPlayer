@@ -1,12 +1,10 @@
 package com.example.cba.mymusicplayer;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.MediaController.MediaPlayerControl;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -38,6 +36,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         btnNextSong = (Button) findViewById(R.id.skipForward);
         btnPreviousSong = (Button) findViewById(R.id.skipBack);
 
+
         utils = new Utilities();
         updateProgressBar();
 
@@ -56,15 +55,22 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
 
         btnNextSong.setOnClickListener(new Button.OnClickListener(){
 
-            public void onClick(View v) {
+            public void onClick(View v){
                 musicSrv.playNext();
             }
         });
 
         btnPreviousSong.setOnClickListener(new Button.OnClickListener(){
 
-            public void onClick(View v) {
-                musicSrv.playPrevious();
+            public void onClick(View v){
+
+                if(songProgressBar.getProgress() < 1){
+                    musicSrv.playPrevious();
+                }
+                    else{
+                    musicSrv.player.seekTo(0);
+                    updateProgressBar();
+                }
             }
         });
 
@@ -98,36 +104,29 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         }
     };
 
-    /**
-     *
-     * */
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
 
     }
 
-    /**
-     * When user starts moving the progress handler
-     * */
+    //sker när användare interagerar med SeekBar
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        // remove message Handler from updating progress bar
         mHandler.removeCallbacks(mUpdateTimeTask);
     }
 
-    /**
-     * When user stops moving the progress hanlder
-     * */
+    //sker när användare slutar interagera med seekBar
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         mHandler.removeCallbacks(mUpdateTimeTask);
         int totalDuration = musicSrv.player.getDuration();
         int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
 
-        // forward or backward to certain seconds
+        // fram eller tillbaka till olika positioner
         musicSrv.player.seekTo(currentPosition);
 
-        // update timer progress again
+        // uppdatera timer
         updateProgressBar();
     }
 

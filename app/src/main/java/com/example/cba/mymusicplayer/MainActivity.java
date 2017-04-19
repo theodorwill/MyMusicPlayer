@@ -90,6 +90,7 @@ public class MainActivity extends Activity {
         }
     };
 
+
     public void getSongList(){
         //skaffa låt informationen
         ContentResolver musicResolver = getContentResolver();
@@ -120,6 +121,7 @@ public class MainActivity extends Activity {
         musicSrv.playSong();
         startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
     }
+
 
 
 
