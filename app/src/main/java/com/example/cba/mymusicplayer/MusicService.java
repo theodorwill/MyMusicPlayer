@@ -1,14 +1,17 @@
 package com.example.cba.mymusicplayer;
 
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.Random;
@@ -26,8 +29,8 @@ public class MusicService extends Service implements
     private ArrayList<Song> songs;
     private int songPosn;
     private final IBinder musicBind = new MusicBinder();
-    private boolean shuffle=false;
-    private Random rand;
+    private boolean shuffle = false;
+    private boolean repeat = false;
 
     public void onCreate(){
         //create the service
@@ -99,18 +102,31 @@ public class MusicService extends Service implements
         player.seekTo(progress*1000);
     }
 
-    public void setShuffle(){
-        if(shuffle) shuffle=false;
-        else shuffle=true;
+    public void shuffleOn(){
+        shuffle = true;
+    }
+
+    public void repeatOn(){
+        repeat = true;
+    }
+
+    public void resetPlayer(){
+        shuffle = false;
+        repeat = false;
+        player.setLooping(false);
     }
 
     public void playNext(){
         if(shuffle){
             int newSong = songPosn;
-            while(newSong==songPosn){
-                newSong=rand.nextInt(songs.size());
+            Random rand = new Random();
+            while(newSong == songPosn){
+                newSong = rand.nextInt(songs.size());
             }
             songPosn=newSong;
+        }else if(repeat){
+            player.setLooping(true);
+            player.reset();
         }
         else{
             songPosn++;
@@ -152,6 +168,7 @@ public class MusicService extends Service implements
 
     @Override
     public boolean onError(MediaPlayer player, int what, int extra) {
+        player.reset();
         return false;
 
     }

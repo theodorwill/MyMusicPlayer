@@ -1,13 +1,30 @@
 package com.example.cba.mymusicplayer;
 
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import com.squareup.picasso.Picasso;
+
+import static android.R.attr.description;
 
 /**
  * Created by cba on 2017-04-09.
@@ -19,10 +36,16 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
     private TextView songTotalDurationLabel;
     private SeekBar songProgressBar;
     private ToggleButton btnPlayPause;
+    private ToggleButton btnShuffle;
+    private ToggleButton btnRepeat;
     private Button btnNextSong;
     private Button btnPreviousSong;
     Handler mHandler = new Handler();
     private Utilities utils;
+    private ImageView imageArt;
+    private TextView titleText;
+    private TextView artistText;
+
 
 
 
@@ -37,10 +60,14 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         btnNextSong = (Button) findViewById(R.id.skipForward);
         btnPreviousSong = (Button) findViewById(R.id.skipBack);
         btnPlayPause = (ToggleButton) findViewById(R.id.playPause);
-
+        btnRepeat = (ToggleButton) findViewById(R.id.repeat);
+        btnShuffle = (ToggleButton) findViewById(R.id.shuffle);
+        titleText = (TextView) findViewById(R.id.songTitle);
+        artistText = (TextView) findViewById(R.id.artistName);
 
         utils = new Utilities();
         updateProgressBar();
+
 
         songProgressBar.setOnSeekBarChangeListener(this);
 
@@ -50,35 +77,73 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
                     musicSrv.resumeSong();
                 } else {
                     musicSrv.pauseSong();
+                    Toast.makeText(MusicPlayer.this,"Paused",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnShuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btnRepeat.setChecked(false);
+                    musicSrv.resetPlayer();
+                    musicSrv.shuffleOn();
+                    Toast.makeText(MusicPlayer.this,"Shuffle on",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    musicSrv.resetPlayer();
+                    Toast.makeText(MusicPlayer.this,"Shuffle off",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        btnRepeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    btnShuffle.setChecked(false);
+                    musicSrv.resetPlayer();
+                    musicSrv.repeatOn();
+                    Toast.makeText(MusicPlayer.this,"Repeat song on",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    musicSrv.resetPlayer();
+                    Toast.makeText(MusicPlayer.this,"Repeat song off",
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         //knapp för att gå till nästa låt
-        btnNextSong.setOnClickListener(new Button.OnClickListener(){
+        btnNextSong.setOnClickListener(new Button.OnClickListener() {
 
-            public void onClick(View v){
+            public void onClick(View v) {
                 musicSrv.playNext();
                 btnPlayPause.setChecked(true);
             }
         });
 
         //knapp för att spela föregående låt samt gå tbx till början.
-        btnPreviousSong.setOnClickListener(new Button.OnClickListener(){
+        btnPreviousSong.setOnClickListener(new Button.OnClickListener() {
 
-            public void onClick(View v){
+            public void onClick(View v) {
 
-                if(songProgressBar.getProgress() <= 0){
+                if (songProgressBar.getProgress() <= 0) {
                     musicSrv.playPrevious();
                     btnPlayPause.setChecked(true);
-                }
-                    else{
+                } else {
                     musicSrv.player.seekTo(0);
                     updateProgressBar();
                     btnPlayPause.setChecked(true);
                 }
             }
         });
+
+    }
+
+    public void onClick(View v){
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
     public void updateProgressBar() {
