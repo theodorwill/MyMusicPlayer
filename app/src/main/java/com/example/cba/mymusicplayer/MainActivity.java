@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
         startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
     }
 
-
-
-
+    public void goBack(View v){
+        startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
+    }
 }

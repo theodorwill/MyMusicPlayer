@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#565b63">
@@ -8,9 +8,12 @@
         android:layout_width="fill_parent"
         android:layout_height="10dp"
         android:layout_gravity="center"
-        android:background="#363a3d" />
+        android:layout_marginTop="0dp"
+        android:background="#363a3d"/>
 
     <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/playListTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Playlist"
@@ -21,14 +24,27 @@
         android:textStyle="bold"/>
 
     <View
+        android:id="@+id/playView"
         android:layout_width="fill_parent"
         android:layout_height="10dp"
+        android:layout_below="@id/playListTitle"
         android:layout_gravity="center"
         android:background="#363a3d" />
 
+    <ImageView
+        android:id="@+id/goBack"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="10dp"
+        android:onClick="goBack"
+        android:clickable="true"
+        android:background="@drawable/ic_arrow_back" />
+
     <ListView
         android:id="@+id/song_list"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/playView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+</RelativeLayout>
