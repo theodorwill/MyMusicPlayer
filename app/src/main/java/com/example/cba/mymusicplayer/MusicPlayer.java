@@ -3,6 +3,7 @@ package com.example.cba.mymusicplayer;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -54,6 +55,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
+
         songProgressBar = (SeekBar) findViewById(R.id.songTimer);
         songCurrentDurationLabel = (TextView) findViewById(R.id.currentTime);
         songTotalDurationLabel = (TextView) findViewById(R.id.endTime);
@@ -69,6 +71,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         updateProgressBar();
 
 
+
         songProgressBar.setOnSeekBarChangeListener(this);
 
         btnPlayPause.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -78,7 +81,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
                 } else {
                     musicSrv.pauseSong();
                     Toast.makeText(MusicPlayer.this,"Paused",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -90,11 +93,11 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
                     musicSrv.resetPlayer();
                     musicSrv.shuffleOn();
                     Toast.makeText(MusicPlayer.this,"Shuffle on",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     musicSrv.resetPlayer();
                     Toast.makeText(MusicPlayer.this,"Shuffle off",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -106,11 +109,11 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
                     musicSrv.resetPlayer();
                     musicSrv.repeatOn();
                     Toast.makeText(MusicPlayer.this,"Repeat song on",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     musicSrv.resetPlayer();
                     Toast.makeText(MusicPlayer.this,"Repeat song off",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -198,5 +201,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
         // uppdatera timer
         updateProgressBar();
     }
+
+
 
 }
