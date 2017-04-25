@@ -1,19 +1,8 @@
 package com.example.cba.mymusicplayer;
 
-import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -23,15 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.squareup.picasso.Picasso;
-
-import static android.R.attr.description;
-
 /**
  * Created by cba on 2017-04-09.
  */
 
-public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChangeListener {
+public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChangeListener {
 
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
@@ -146,7 +131,7 @@ public class MusicPlayer extends MainActivity implements SeekBar.OnSeekBarChange
     }
 
     public void onClick(View v){
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), ListActivity.class));
     }
 
     public void updateProgressBar() {

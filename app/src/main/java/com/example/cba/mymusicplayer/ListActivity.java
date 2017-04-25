@@ -21,7 +21,7 @@ import android.content.ServiceConnection;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends Activity {
+public class ListActivity extends Activity {
 
     private ArrayList<Song> songList;
     private ListView songView;
@@ -46,10 +46,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_songlist);
 
-        songView = (ListView)findViewById(R.id.song_list);
-
-        songList = new ArrayList<Song>();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -58,6 +54,12 @@ public class MainActivity extends Activity {
 
                 return;
             }}
+
+        songView = (ListView)findViewById(R.id.song_list);
+
+        songList = new ArrayList<Song>();
+
+
         //Kalla på låtlistan
         getSongList();
         //Sortera låtarna i alfabetisk ordning
