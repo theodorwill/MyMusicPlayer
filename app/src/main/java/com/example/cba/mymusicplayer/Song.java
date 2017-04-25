@@ -1,9 +1,9 @@
 package com.example.cba.mymusicplayer;
 
 /**
- * Created by cba on 2017-04-09.
+ * Created by TW on 2017-04-09.
  */
-
+//Attributer för låtar i arraylist
 public class Song {
 
     private long id;
@@ -19,7 +19,6 @@ public class Song {
     public long getID(){return id;}
     public String getTitle(){return title;}
     public String getArtist(){return artist;}
-
 }
 
 

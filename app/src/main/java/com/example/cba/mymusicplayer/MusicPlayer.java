@@ -13,7 +13,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 /**
- * Created by cba on 2017-04-09.
+ * Created by TW on 2017-04-09.
  */
 
 public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChangeListener {
@@ -28,18 +28,14 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
     private Button btnPreviousSong;
     Handler mHandler = new Handler();
     private Utilities utils;
-    private ImageView imageArt;
-    private TextView titleText;
-    private TextView artistText;
-
-
-
+    private ImageView imageArt; //används ej just nu, tanken var att sätta imageArt via Picasso
+    private TextView titleText; //används ej just nu
+    private TextView artistText;//används ej just nu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
 
         songProgressBar = (SeekBar) findViewById(R.id.songTimer);
         songCurrentDurationLabel = (TextView) findViewById(R.id.currentTime);
@@ -55,10 +51,8 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
         utils = new Utilities();
         updateProgressBar();
 
-
-
         songProgressBar.setOnSeekBarChangeListener(this);
-
+        //pause kontroll
         btnPlayPause.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -70,7 +64,7 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
                 }
             }
         });
-
+        //shuffle kontroll
         btnShuffle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -86,7 +80,7 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
                 }
             }
         });
-
+        //repeat kontroll
         btnRepeat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -112,7 +106,7 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
             }
         });
 
-        //knapp för att spela föregående låt samt gå tbx till början.
+        //knapp för att spela föregående låt samt gå tbx till början av en låt.
         btnPreviousSong.setOnClickListener(new Button.OnClickListener() {
 
             public void onClick(View v) {
@@ -129,18 +123,16 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
         });
 
     }
-
+    //när man klickar på textvyn så kommer man till låtlistan
     public void onClick(View v){
         startActivity(new Intent(getApplicationContext(), ListActivity.class));
     }
-
+    //uppdatering av seekbar
     public void updateProgressBar() {
         mHandler.postDelayed(mUpdateTimeTask, 100);
     }
 
-    /**
-     * Background Runnable thread
-     * */
+    //bakgrunds tråd
     private Runnable mUpdateTimeTask = new Runnable() {
         public void run() {
             long totalDuration = musicSrv.player.getDuration();
@@ -161,10 +153,8 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
         }
     };
 
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
-
     }
 
     //sker när användare interagerar med SeekBar
@@ -186,7 +176,4 @@ public class MusicPlayer extends ListActivity implements SeekBar.OnSeekBarChange
         // uppdatera timer
         updateProgressBar();
     }
-
-
-
 }

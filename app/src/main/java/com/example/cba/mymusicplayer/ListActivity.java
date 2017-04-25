@@ -1,10 +1,5 @@
 package com.example.cba.mymusicplayer;
-import com.example.cba.mymusicplayer.MusicService.MusicBinder;
-import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +13,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.view.MenuItem;
 import android.view.View;
 
 public class ListActivity extends Activity {
@@ -29,8 +23,7 @@ public class ListActivity extends Activity {
     private Intent playIntent;
     private boolean musicBound=false;
 
-
-
+    //binder aktivitet till musicservice
     @Override
     protected void onStart() {
         super.onStart();
@@ -46,19 +39,9 @@ public class ListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_songlist);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},1);
-
-                return;
-            }}
-
         songView = (ListView)findViewById(R.id.song_list);
 
         songList = new ArrayList<Song>();
-
 
         //Kalla på låtlistan
         getSongList();
@@ -68,12 +51,12 @@ public class ListActivity extends Activity {
                 return a.getTitle().compareTo(b.getTitle());
             }
         });
-
+        //sätter songAdaptern
         SongAdapter songAdt = new SongAdapter(this, songList);
         songView.setAdapter(songAdt);
     }
 
-    //connect to the service
+    //"Connect:ar" till musicservice
     private ServiceConnection musicConnection = new ServiceConnection(){
 
         @Override
@@ -92,13 +75,13 @@ public class ListActivity extends Activity {
         }
     };
 
-
+    //skaffa låt informationen
     public void getSongList(){
-        //skaffa låt informationen
+
         ContentResolver musicResolver = getContentResolver();
         Uri musicUri = android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
+        //Startar en loop för cursorn så den letar upp alla filer
         if(musicCursor!=null && musicCursor.moveToFirst()){
             //hämta kolumner
             int titleColumn = musicCursor.getColumnIndex
@@ -117,13 +100,13 @@ public class ListActivity extends Activity {
             while (musicCursor.moveToNext());
         }
     }
-
+    //när en låt är vald så körs musicservice och sedan går den till nästa aktivitet
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
         musicSrv.playSong();
         startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
     }
-
+    //intent för tillbaka knappen i ListActivity
     public void goBack(View v){
         startActivity(new Intent(getApplicationContext(), MusicPlayer.class));
     }

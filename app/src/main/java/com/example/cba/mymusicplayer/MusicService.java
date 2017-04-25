@@ -1,24 +1,21 @@
 package com.example.cba.mymusicplayer;
 
 import android.app.Service;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.provider.MediaStore;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.Random;
 import static android.R.id.progress;
 
 /**
- * Created by cba on 2017-04-02.
+ * Created by TW on 2017-04-02.
  */
 
 public class MusicService extends Service implements
@@ -33,7 +30,7 @@ public class MusicService extends Service implements
     private boolean repeat = false;
 
     public void onCreate(){
-        //create the service
+        //skapa service
         super.onCreate();
         songPosn=0;
         player = new MediaPlayer();
@@ -50,7 +47,7 @@ public class MusicService extends Service implements
         player.setOnCompletionListener(this);
         player.setOnErrorListener(this);
     }
-
+    //sätter låtlistan till arrayen
     public void setList(ArrayList<Song> theSongs){
         songs=theSongs;
     }
@@ -60,13 +57,17 @@ public class MusicService extends Service implements
             return MusicService.this;
         }
     }
-
+    //spela en låt
     public void playSong(){
-        //play a song
+        //återställ spelaren så att den inte knasar
         player.reset();
-        //get song
+        //skaffa låt position av nuvarande låt
         Song playSong = songs.get(songPosn);
-        //get id
+        /**
+         * Skaffa låt ID av nuvarande låt (borde också kunna hämta
+         * titel samt artist men jag vet inte hur jag ska fästa det
+         * på en textview i en annan vy)
+         */
         long currSong = playSong.getID();
 
         //set uri
@@ -81,6 +82,10 @@ public class MusicService extends Service implements
         }
         player.prepareAsync();
     }
+
+    /**
+     * från och med nu är det ganska uppenbart vad metoderna gör
+     */
 
     public void resumeSong(){
         player.start();
